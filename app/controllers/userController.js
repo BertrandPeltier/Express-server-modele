@@ -5,6 +5,7 @@ module.exports = {
         try {
             const data = await userDataMapper.findAll();
             response.status(200).json({data});
+            return;
         } catch (error) {
             next(error);
         }
@@ -17,9 +18,11 @@ module.exports = {
                 response.status(400).json({
                     message: 'Bad request',
                     detail: 'Invalid id'
-                })
+                });
+                return;
             }
             response.status(200).json({data});
+            return;
         } catch (error) {
             next(error);
         }

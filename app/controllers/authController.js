@@ -13,6 +13,7 @@ module.exports = {
                     message: "Registration failed",
                     detail: "Email already in use"
                 });
+                return;
             } else {
                 const hashPassword = await argon2.hash(password);
                 const user = await authDataMapper.createUser(name, email, hashPassword);
@@ -21,6 +22,7 @@ module.exports = {
                     message: "Registration succed",
                     created_user: user
                 });
+                return;
             }
         } catch (error) {
             next(error);
@@ -36,6 +38,7 @@ module.exports = {
                     message: "Authentication failed",
                     detail: "Invalid email"
                 });
+                return;
             }
             if (await argon2.verify(user.password, password)) {
                 user.token = tokenHandler.generate(user);
@@ -43,11 +46,13 @@ module.exports = {
                     message: "Authentication succed",    
                     connected_user: user
                 });
+                return;
             } else {
                 response.status(401).json({
                     message: "Authentication failed",
                     detail: "Invalid password"
                 });
+                return;
             }
         } catch (error) {
             next(error);
