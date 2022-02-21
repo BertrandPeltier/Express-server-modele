@@ -22,6 +22,6 @@ router.use(`${baseUrl}/auth`, authRouter);
 
 // Gestion des erreurs 404 et 500
 router.use(errorsMiddleware.error404);
-router.use(errorsMiddleware.error500);
+router.use(errorsMiddleware.errors);
 
 module.exports = router;

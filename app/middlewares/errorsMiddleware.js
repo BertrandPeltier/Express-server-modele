@@ -12,13 +12,24 @@ module.exports = {
             }
         })
     },
-    async error500(error, _, response, __) {
-        response.status(500).json({
-            error: {
-                message: "Internal Server error",
-                messageDetail: error.message,
-                infos: error
-            }
-        })
+    async errors(error, _, response, __) {
+        if (error.statusCode) {
+            response.status(error.statusCode).json({
+                error: {
+                    status: error.statusCode,
+                    message: error.message,
+                    messageDetail: error.messageDetail ,
+                }
+            });
+        } else {
+            response.status(500).json({
+                error: {
+                    message: "Internal Server error",
+                    messageDetail: error.message,
+                    infos: error
+                }
+            });
+        }
+
     },
 };

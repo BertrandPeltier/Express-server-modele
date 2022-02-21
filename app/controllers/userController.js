@@ -15,14 +15,13 @@ module.exports = {
         try {
             const data = await userDataMapper.findById(id);
             if (data.length === 0) {
-                response.status(400).json({
-                    message: 'Bad request',
-                    detail: 'Invalid id'
-                });
-                return;
+                const error = new Error ('Bad request');
+                error.messageDetail = 'Invalid id';
+                error.statusCode = 400;
+                throw error;
+            } else {
+                response.status(200).json({data});
             }
-            response.status(200).json({data});
-            return;
         } catch (error) {
             next(error);
         }

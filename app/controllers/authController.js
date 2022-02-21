@@ -9,11 +9,10 @@ module.exports = {
         try {
             const userFound = await authDataMapper.findUserByEmail(email);
             if (userFound) {
-                response.status(400).json({
-                    message: "Registration failed",
-                    detail: "Email already in use"
-                });
-                return;
+                const error = new Error ('Registration failed');
+                error.messageDetail = 'Email already in use';
+                error.statusCode = 400;
+                throw error;
             } else {
                 const hashPassword = await argon2.hash(password);
                 const user = await authDataMapper.createUser(name, email, hashPassword);
@@ -34,25 +33,22 @@ module.exports = {
         try {
             const user = await authDataMapper.findUserByEmail(email);
             if (!user) {
-                response.status(401).json({
-                    message: "Authentication failed",
-                    detail: "Invalid email"
-                });
-                return;
+                const error = new Error ('Authentication failed');
+                error.messageDetail = 'Invalid email';
+                error.statusCode = 401;
+                throw error;
             }
-            if (await argon2.verify(user.password, password)) {
+            else if (await argon2.verify(user.password, password)) {
                 user.token = tokenHandler.generate(user);
                 response.status(200).json({
                     message: "Authentication succed",    
                     connected_user: user
                 });
-                return;
             } else {
-                response.status(401).json({
-                    message: "Authentication failed",
-                    detail: "Invalid password"
-                });
-                return;
+                const error = new Error ('Authentication failed');
+                error.messageDetail = 'Invalid password';
+                error.statusCode = 401;
+                throw error;
             }
         } catch (error) {
             next(error);
