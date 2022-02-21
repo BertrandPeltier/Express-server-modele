@@ -1,6 +1,10 @@
 const userDataMapper = require('../dataMappers/userDataMapper');
 
-module.exports = {
+const userController = {
+    async getUserId(request, response, next) {
+        request.params.id = response.locals.token.id;
+        next();
+    },
     async findAll(_, response, next) {
         try {
             const data = await userDataMapper.findAll();
@@ -28,3 +32,5 @@ module.exports = {
         
     },
 };
+
+module.exports = userController;

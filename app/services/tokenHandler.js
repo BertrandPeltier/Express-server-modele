@@ -12,7 +12,7 @@ const secureByToken = {
 
     generate(user, limit) {
 
-        if (!user.role) user.role = 1;
+        if (!user.role) user.role = 2;
 
         if (!limit) limit = process.env.JWT_TIME_LIMIT;
 
