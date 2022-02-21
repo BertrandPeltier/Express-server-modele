@@ -7,5 +7,6 @@ const userSchema = require('../middlewares/validationSchema/userSchema');
 
 router.post('/signup', validationMiddleware.validateBody(userSchema), authController.signup);
 router.post('/signin', authController.signin);
+router.get('/token', authController.getAccessToken);
 
 module.exports = router;

@@ -12,11 +12,14 @@ const secureByToken = {
 
     generate(user, limit) {
 
+        if (!user.role) user.role = 1;
+
         if (!limit) limit = process.env.JWT_TIME_LIMIT;
 
         const token = jsonwebtoken.sign(
             {
-                id: user.id
+                id: user.id,
+                role: user.role
             },
             secret,
             {
@@ -27,7 +30,10 @@ const secureByToken = {
     },
 
     verify(token) {
-        return jsonwebtoken.verify(token, secret);
+        return jsonwebtoken.verify(token, secret, (error, decoded) => {
+            if (error) throw (error);
+            return decoded;
+        });
     },
 
 };

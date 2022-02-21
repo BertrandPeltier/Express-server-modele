@@ -12,11 +12,12 @@ module.exports = {
                 throw error;
             } else {
                 try {
-                    tokenHandler.verify(token);
+                    const verifiedtoken = tokenHandler.verify(token);
+                    response.locals.token = verifiedtoken;
                     next();
                 } catch (error) {
+                    error.messageDetail = `Invalid Access token : ${error.message}`,
                     error.message = 'Access denied';
-                    error.messageDetail = 'Invalid Access token';
                     error.statusCode = 401;
                     throw error;
                 }

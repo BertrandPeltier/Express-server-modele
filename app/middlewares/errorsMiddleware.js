@@ -18,7 +18,7 @@ module.exports = {
                 error: {
                     status: error.statusCode,
                     message: error.message,
-                    messageDetail: error.messageDetail ,
+                    messageDetail: error.messageDetail,
                 }
             });
         } else {
