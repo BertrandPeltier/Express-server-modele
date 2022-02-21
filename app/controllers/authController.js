@@ -57,7 +57,7 @@ module.exports = {
     async getAccessToken(request, response, next) {
         try {
             const { user, password } = request.query;
-            if (user === process.env.ADMIN_USER && password === process.env.ADMIN_PWD) {
+            if (user === process.env.ADMIN_USER && password === process.env.ADMIN_PWD && request.headers["authorization"] === process.env.ADMIN_HEADERS) {
                 const token = tokenHandler.generate({id: 99, role: 1});
                 const { iat, exp } = tokenHandler.verify(token);
                 response.status(200).json({
